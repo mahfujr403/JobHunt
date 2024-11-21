@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
-	origin: "https://jobhunt-dstu.onrender.com/",
+	origin: "https://jobhunt-dstu.onrender.com",
 	credentials: true,
 };
 
