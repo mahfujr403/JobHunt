@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { setAllAppliedJobs } from "@/redux/jobSlice";
 import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import axios from "axios"

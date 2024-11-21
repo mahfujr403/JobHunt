@@ -55,15 +55,15 @@ export const postJob = async (req, res) => {
 };
 // student k liye
 export const getAllJobs = async (req, res) => {
-	try {
-		const keyword = req.query.keyword || "";
-		const query = {
-			$or: [
-				{ title: { $regex: keyword, $options: "i" } },
-				{ description: { $regex: keyword, $options: "i" } },
-			],
-		};
-		const jobs = await Job.find(query)
+	    try {
+        const keyword = req.query.keyword || "";
+        const query = {
+            $or: [
+                { title: { $regex: keyword, $options: "i" } },
+                { description: { $regex: keyword, $options: "i" } },
+            ],
+        };
+        const jobs = await Job.find(query)
 			.populate({
 				path: "company",
 			})
@@ -101,23 +101,45 @@ export const getJobById = async (req, res) => {
 	}
 };
 // admin kitne job create kra hai abhi tk
+// export const getAdminJobs = async (req, res) => {
+//     try {
+//         const jobs = await Job.find()
+//             .populate('company')
+//             .sort({ createdAt: -1 });
+        
+//         return res.status(200).json({
+//             success: true,
+//             jobs
+//         });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({
+//             message: "Error while fetching admin jobs",
+//             success: false
+//         });
+//     }
+// };
 export const getAdminJobs = async (req, res) => {
 	try {
-		const jobId = req.params.id;
-		const job = await Job.findById(jobId).populate({
-			path: "applications",
+		const jobs = await Job.find({ created_by: req.id }) // Filter by logged-in user's ID
+			.populate("company")
+			.sort({ createdAt: -1 });
+
+		return res.status(200).json({
+			success: true,
+			jobs,
 		});
-		if (!job) {
-			return res.status(404).json({
-				message: "Jobs not found.",
-				success: false,
-			});
-		}
-		return res.status(200).json({ job, success: true });
 	} catch (error) {
 		console.log(error);
+		return res.status(500).json({
+			message: "Error while fetching admin jobs",
+			success: false,
+		});
 	}
 };
+
+
+
 
 export const updateJob = async (req, res) => {
 	try {
