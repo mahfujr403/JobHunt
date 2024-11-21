@@ -67,7 +67,7 @@ const JobDescription = () => {
 		};
 		fetchSingleJob();
 	}, [jobId, dispatch, user?._id]);
-
+	
 	return (
 		<>
 			<Navbar />
