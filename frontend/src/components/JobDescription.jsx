@@ -24,8 +24,8 @@ const JobDescription = () => {
 	const dispatch = useDispatch();
 
 	const applyJobHandler = async () => {
-		console.log("apply job handler");
-		console.log(singleJob.experienceLevel);
+		("apply job handler");
+		singleJob.experienceLevel;
 		try {
 			const res = await axios.get(
 				`${APPLICATION_API_END_POINT}/apply/${jobId}`,
@@ -42,7 +42,7 @@ const JobDescription = () => {
 				toast.success(res.data.message);
 			}
 		} catch (error) {
-			console.log(error);
+			error;
 			toast.error(error.response.data.message);
 		}
 	};
@@ -62,12 +62,12 @@ const JobDescription = () => {
 					); // Ensure the state is in sync with fetched data
 				}
 			} catch (error) {
-				console.log(error);
+				error;
 			}
 		};
 		fetchSingleJob();
 	}, [jobId, dispatch, user?._id]);
-	
+
 	return (
 		<>
 			<Navbar />

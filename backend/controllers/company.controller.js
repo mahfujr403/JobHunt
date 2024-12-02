@@ -1,6 +1,6 @@
 import { Company } from "../models/company.model.js";
-import getDataUri from "../utils/datauri.js";
 import cloudinary from "../utils/cloudinary.js";
+import getDataUri from "../utils/datauri.js";
 
 export const registerCompany = async (req, res) => {
     try {
@@ -29,7 +29,7 @@ export const registerCompany = async (req, res) => {
             success: true
         })
     } catch (error) {
-        console.log(error);
+         (error);
     }
 }
 export const getCompany = async (req, res) => {
@@ -47,7 +47,7 @@ export const getCompany = async (req, res) => {
             success:true
         })
     } catch (error) {
-        console.log(error);
+         (error);
     }
 }
 // get company by id
@@ -66,7 +66,7 @@ export const getCompanyById = async (req, res) => {
             success: true
         })
     } catch (error) {
-        console.log(error);
+         (error);
     }
 }
 export const updateCompany = async (req, res) => {
@@ -95,6 +95,6 @@ export const updateCompany = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error);
+         (error);
     }
 }

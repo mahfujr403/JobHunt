@@ -50,7 +50,7 @@ export const postJob = async (req, res) => {
 			success: true,
 		});
 	} catch (error) {
-		console.log(error);
+		 (error);
 	}
 };
 // student k liye
@@ -79,7 +79,7 @@ export const getAllJobs = async (req, res) => {
 			success: true,
 		});
 	} catch (error) {
-		console.log(error);
+		 (error);
 	}
 };
 // student
@@ -97,7 +97,7 @@ export const getJobById = async (req, res) => {
 		}
 		return res.status(200).json({ job, success: true });
 	} catch (error) {
-		console.log(error);
+		 (error);
 	}
 };
 // admin kitne job create kra hai abhi tk
@@ -112,7 +112,7 @@ export const getJobById = async (req, res) => {
 //             jobs
 //         });
 //     } catch (error) {
-//         console.log(error);
+//          (error);
 //         return res.status(500).json({
 //             message: "Error while fetching admin jobs",
 //             success: false
@@ -130,7 +130,7 @@ export const getAdminJobs = async (req, res) => {
 			jobs,
 		});
 	} catch (error) {
-		console.log(error);
+		 (error);
 		return res.status(500).json({
 			message: "Error while fetching admin jobs",
 			success: false,
@@ -188,6 +188,6 @@ export const updateJob = async (req, res) => {
 			success: true,
 		});
 	} catch (error) {
-		console.log(error);
+		 (error);
 	}
 };

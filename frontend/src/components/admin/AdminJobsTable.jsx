@@ -21,7 +21,7 @@ const AdminJobsTable = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		console.log("called");
+		("called");
 		const filteredJobs = allAdminJobs.filter((job) => {
 			if (!searchJobByText) {
 				return true;
@@ -35,6 +35,9 @@ const AdminJobsTable = () => {
 	}, [allAdminJobs, searchJobByText]);
 	return (
 		<div>
+			<h1 className="text-4xl md:text-6xl font-bold text-gray-800 leading-tight ">
+				Jobs
+			</h1>
 			<Table>
 				<TableCaption>A list of your recent posted jobs</TableCaption>
 				<TableHeader>

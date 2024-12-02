@@ -61,7 +61,7 @@ const JobSetup = () => {
 				navigate("/admin/jobs");
 			}
 		} catch (error) {
-			console.log(error);
+			error;
 			toast.error(error.response.data.message);
 		} finally {
 			setLoading(false);

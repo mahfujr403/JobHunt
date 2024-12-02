@@ -36,6 +36,9 @@ const CompaniesTable = () => {
 	}, [companies, searchCompanyByText]);
 	return (
 		<div>
+			<h1 className="text-4xl md:text-6xl font-bold text-gray-800 leading-tight ">
+				Companies
+			</h1>
 			<Table>
 				<TableCaption>A list of your recent registered companies</TableCaption>
 				<TableHeader>

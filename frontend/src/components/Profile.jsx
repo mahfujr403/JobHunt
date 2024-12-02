@@ -19,7 +19,7 @@ const Profile = () => {
 	useGetAppliedJobs();
 	const [open, setOpen] = useState(false);
 	const { user } = useSelector((store) => store.auth);
-	console.log(user.profile.resume);
+	user.profile.resume;
 
 	return (
 		<div>
@@ -72,7 +72,7 @@ const Profile = () => {
 
 				<div className="grid w-full max-w-sm items-center gap-1.5">
 					<Label className="text-md font-bold">Resume</Label>
-					{console.log(user?.profile?.resume)}
+					{user?.profile?.resume}
 					{isResume ? (
 						<a
 							target="blank"
@@ -115,7 +115,7 @@ export default Profile;
 // 	useGetAppliedJobs();
 // 	const [open, setOpen] = useState(false);
 // 	const { user } = useSelector((store) => store.auth);
-// 	console.log(user.profile.resume);
+// 	 (user.profile.resume);
 
 // 	const handleResumeOpen = async (pdfUrl) => {
 // 		try {
@@ -134,7 +134,7 @@ export default Profile;
 // 			const pdfWindow = window.open();
 // 			pdfWindow.location.href = fileURL;
 // 		} catch (error) {
-// 			console.log("Error opening PDF:", error);
+// 			 ("Error opening PDF:", error);
 // 		}
 // 	};
 
