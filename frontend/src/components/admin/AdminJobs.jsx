@@ -32,6 +32,9 @@ const AdminJobs = () => {
 						New Jobs
 					</Button>
 				</div>
+				<h1 className="text-4xl md:text-6xl font-bold text-center text-gray-800 leading-tight ">
+					Jobs
+				</h1>
 				<AdminJobsTable />
 			</div>
 		</div>
