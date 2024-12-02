@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import useGetJobById from "@/hooks/useGetJobById";
 import { JOB_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
@@ -22,7 +23,6 @@ const JobSetup = () => {
 		jobType: "",
 		salary: "",
 		company: "",
-		file: null,
 	});
 
 	const { singleJob } = useSelector((store) => store.job);
@@ -43,9 +43,7 @@ const JobSetup = () => {
 		formData.append("jobType", input.jobType);
 		formData.append("salary", input.salary);
 		formData.append("company", input.company);
-		if (input.file) {
-			formData.append("file", input.file);
-		}
+
 		try {
 			setLoading(true);
 			const res = await axios.put(
@@ -71,14 +69,16 @@ const JobSetup = () => {
 	};
 
 	useEffect(() => {
-		setInput({ ...input, title: singleJob.title });
-		setInput({ ...input, description: singleJob.description });
-		setInput({ ...input, location: singleJob.location });
-		setInput({ ...input, position: singleJob.position });
-		setInput({ ...input, jobType: singleJob.jobType });
-		setInput({ ...input, salary: singleJob.salary });
-		setInput({ ...input, company: singleJob.company });
-	}, [input, singleJob]);
+		setInput({
+			title: singleJob.title,
+			description: singleJob.description,
+			location: singleJob.location,
+			position: singleJob.position,
+			jobType: singleJob.jobType,
+			salary: singleJob.salary,
+			company: singleJob.company,
+		});
+	}, [singleJob]);
 
 	return (
 		<div>
