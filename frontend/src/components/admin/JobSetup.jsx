@@ -11,6 +11,7 @@ import Navbar from "../shared/Navbar";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { Textarea } from "../ui/textArea";
 
 const JobSetup = () => {
 	const params = useParams();
@@ -110,12 +111,11 @@ const JobSetup = () => {
 					</div>
 					<div>
 						<Label>Description</Label>
-						<textarea
+						<Textarea
+							type="text"
 							name="description"
 							value={input.description}
 							onChange={changeEventHandler}
-							className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
-							rows="6"
 						/>
 					</div>
 					<div>

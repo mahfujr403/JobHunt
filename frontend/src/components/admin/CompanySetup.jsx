@@ -10,6 +10,7 @@ import Navbar from "../shared/Navbar";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { Textarea } from "../ui/textArea";
 
 const CompanySetup = () => {
 	const params = useParams();
@@ -106,7 +107,7 @@ const CompanySetup = () => {
 						</div>
 						<div>
 							<Label>Description</Label>
-							<Input
+							<Textarea 
 								type="text"
 								name="description"
 								value={input.description}
