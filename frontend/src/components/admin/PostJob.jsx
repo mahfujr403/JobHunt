@@ -89,23 +89,22 @@ const PostJob = () => {
 								className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
 							/>
 						</div>
-						
-						<div>
-							<Label>Description</Label>
-							<textarea
-								type="text"
-								name="description"
-								value={input.description}
-								onChange={changeEventHandler}
-								className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
-							/>
-						</div>
 						<div>
 							<Label>Requirements</Label>
 							<Input
 								type="text"
 								name="requirements"
 								value={input.requirements}
+								onChange={changeEventHandler}
+								className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+							/>
+						</div>
+						<div className="col-span-2">
+							<Label>Description</Label>
+							<textarea
+								type="text"
+								name="description"
+								value={input.description}
 								onChange={changeEventHandler}
 								className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
 							/>
