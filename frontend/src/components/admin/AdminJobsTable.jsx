@@ -39,8 +39,8 @@ const AdminJobsTable = () => {
 				<TableCaption>A list of your recent posted jobs</TableCaption>
 				<TableHeader>
 					<TableRow>
-						<TableHead>Company Name</TableHead>
 						<TableHead>Role</TableHead>
+						<TableHead>Company Name</TableHead>
 						<TableHead>Date</TableHead>
 						<TableHead className="text-right">Action</TableHead>
 					</TableRow>
@@ -48,8 +48,8 @@ const AdminJobsTable = () => {
 				<TableBody>
 					{filterJobs?.map((job) => (
 						<tr>
-							<TableCell>{job?.company?.name}</TableCell>
-							<TableCell>{job?.title}</TableCell>
+							<TableCell className="font-bold">{job?.title}</TableCell>
+							<TableCell className="text-gray">{job?.company?.name}</TableCell>
 							<TableCell>{job?.createdAt.split("T")[0]}</TableCell>
 							<TableCell className="text-right cursor-pointer">
 								<Popover>

@@ -141,7 +141,7 @@ const JobSetup = () => {
 						</div>
 
 						<div>
-							<Label>job Type</Label>
+							<Label>Job Type</Label>
 							<Input
 								type="text"
 								name="jobType"
