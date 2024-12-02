@@ -49,8 +49,8 @@ const PostJob = () => {
 		setInput({ ...input, companyId: selectedCompany._id });
 	};
 
-	const selectJobTypeHandler = (value) => {
-		setInput({ ...input, jobType: value });
+	const selectJobTypeHandler = (e) => {
+		setInput({ ...input, [e.target.name]: e.target.value });
 	};
 
 	const submitHandler = async (e) => {
@@ -138,26 +138,29 @@ const PostJob = () => {
 							<Label>Experience Level</Label>
 							<Input
 								type="text"
-								name="jobType"
+								name="experience"
 								value={input.experience}
 								onChange={changeEventHandler}
 								className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
 							/>
 						</div>
+
 						<div>
 							<Label>Job Type</Label>
-							<Select onValueChange={selectChangeHandler}>
-								<SelectTrigger className="w-[180px]">
-									<SelectValue placeholder="Select Job Type" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup>
-										<SelectItem value={"Full Time"}>Full Time</SelectItem>
-										<SelectItem value={"Part Time"}>Part Time</SelectItem>
-									</SelectGroup>
-								</SelectContent>
-							</Select>
+							<select
+								name="jobType"
+								value={input.jobType}
+								onChange={selectJobTypeHandler}
+								className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 my-1"
+							>
+								<option value="" disabled>
+									Select Job Type
+								</option>
+								<option value="Full Time">Full Time</option>
+								<option value="Part Time">Part Time</option>
+							</select>
 						</div>
+
 						<div>
 							<Label>No of Postion</Label>
 							<Input
@@ -169,7 +172,7 @@ const PostJob = () => {
 							/>
 						</div>
 						<div>
-							<label>Company</label>
+							<Label>Company</Label>
 							{companies.length > 0 && (
 								<Select onValueChange={selectJobTypeHandler}>
 									<SelectTrigger className="w-[180px]">
