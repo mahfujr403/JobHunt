@@ -49,6 +49,10 @@ const PostJob = () => {
 		setInput({ ...input, companyId: selectedCompany._id });
 	};
 
+	const selectJobTypeHandler = (value) => {
+		setInput({ ...input, jobType: value });
+	};
+
 	const submitHandler = async (e) => {
 		e.preventDefault();
 		try {
@@ -131,24 +135,28 @@ const PostJob = () => {
 							/>
 						</div>
 						<div>
-							<Label>Job Type</Label>
+							<Label>Experience Level</Label>
 							<Input
 								type="text"
 								name="jobType"
-								value={input.jobType}
+								value={input.experience}
 								onChange={changeEventHandler}
 								className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
 							/>
 						</div>
 						<div>
-							<Label>Experience Level</Label>
-							<Input
-								type="text"
-								name="experience"
-								value={input.experience}
-								onChange={changeEventHandler}
-								className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
-							/>
+							<Label>Job Type</Label>
+							<Select onValueChange={selectChangeHandler}>
+								<SelectTrigger className="w-[180px]">
+									<SelectValue placeholder="Select Job Type" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectItem value={"Full Time"}>Full Time</SelectItem>
+										<SelectItem value={"Part Time"}>Part Time</SelectItem>
+									</SelectGroup>
+								</SelectContent>
+							</Select>
 						</div>
 						<div>
 							<Label>No of Postion</Label>
@@ -160,24 +168,27 @@ const PostJob = () => {
 								className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
 							/>
 						</div>
-						{companies.length > 0 && (
-							<Select onValueChange={selectChangeHandler}>
-								<SelectTrigger className="w-[180px]">
-									<SelectValue placeholder="Select a Company" />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectGroup>
-										{companies.map((company) => {
-											return (
-												<SelectItem value={company?.name?.toLowerCase()}>
-													{company.name}
-												</SelectItem>
-											);
-										})}
-									</SelectGroup>
-								</SelectContent>
-							</Select>
-						)}
+						<div>
+							<label>Company</label>
+							{companies.length > 0 && (
+								<Select onValueChange={selectJobTypeHandler}>
+									<SelectTrigger className="w-[180px]">
+										<SelectValue placeholder="Select a Company" />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectGroup>
+											{companies.map((company) => {
+												return (
+													<SelectItem value={company?.name?.toLowerCase()}>
+														{company.name}
+													</SelectItem>
+												);
+											})}
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+							)}
+						</div>
 					</div>
 					{loading ? (
 						<Button className="w-full my-4">
