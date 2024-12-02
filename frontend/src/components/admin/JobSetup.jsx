@@ -127,7 +127,7 @@ const JobSetup = () => {
 								onChange={changeEventHandler}
 								className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
 								rows="6"
-							/>
+							></textarea>
 						</div>
 
 						<div>
