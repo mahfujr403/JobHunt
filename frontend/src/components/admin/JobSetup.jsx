@@ -110,11 +110,12 @@ const JobSetup = () => {
 					</div>
 					<div>
 						<Label>Description</Label>
-						<Input
-							type="text"
+						<textarea
 							name="description"
 							value={input.description}
 							onChange={changeEventHandler}
+							className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+							rows="6"
 						/>
 					</div>
 					<div>
@@ -130,7 +131,7 @@ const JobSetup = () => {
 					<div>
 						<Label>Position</Label>
 						<Input
-							type="text"
+							type="number"
 							name="position"
 							value={input.position}
 							onChange={changeEventHandler}
