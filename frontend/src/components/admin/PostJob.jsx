@@ -147,18 +147,23 @@ const PostJob = () => {
 
 						<div>
 							<Label>Job Type</Label>
-							<select
-								name="jobType"
-								value={input.jobType}
-								onChange={selectJobTypeHandler}
-								className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 my-1"
+							<Select
+								onValueChange={(value) =>
+									setInput({ ...input, jobType: value })
+								}
 							>
-								<option value="" disabled>
-									Select Job Type
-								</option>
-								<option value="Full Time">Full Time</option>
-								<option value="Part Time">Part Time</option>
-							</select>
+								<SelectTrigger className="w-[180px]">
+									<SelectValue placeholder="Select Job Type" />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectGroup>
+										<SelectItem value="Full Time">Full Time</SelectItem>
+										<SelectItem value="Part Time">Part Time</SelectItem>
+										<SelectItem value="Contract">Contract</SelectItem>
+										<SelectItem value="Internship">Internship</SelectItem>
+									</SelectGroup>
+								</SelectContent>
+							</Select>
 						</div>
 
 						<div>
