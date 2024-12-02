@@ -106,7 +106,8 @@ const PostJob = () => {
 								name="description"
 								value={input.description}
 								onChange={changeEventHandler}
-								className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+								className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+								rows="6"
 							/>
 						</div>
 						<div>
