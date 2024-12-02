@@ -19,7 +19,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../ui/select";
-import { Textarea } from "../ui/textArea";
 
 const companyArray = [];
 
@@ -92,7 +91,7 @@ const PostJob = () => {
 						</div>
 						<div>
 							<Label>Description</Label>
-							<Textarea
+							<textarea
 								type="text"
 								name="description"
 								value={input.description}
