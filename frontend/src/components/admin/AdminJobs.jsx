@@ -21,6 +21,9 @@ const AdminJobs = () => {
 	return (
 		<div>
 			<Navbar />
+			<h1 className="text-4xl font-bold text-center text-gray-800 leading-tight ">
+				Jobs
+			</h1>
 			<div className="max-w-6xl mx-auto my-10">
 				<div className="flex items-center justify-between my-5">
 					<Input
@@ -32,9 +35,6 @@ const AdminJobs = () => {
 						New Jobs
 					</Button>
 				</div>
-				<h1 className="text-4xl md:text-6xl font-bold text-center text-gray-800 leading-tight ">
-					Jobs
-				</h1>
 				<AdminJobsTable />
 			</div>
 		</div>
