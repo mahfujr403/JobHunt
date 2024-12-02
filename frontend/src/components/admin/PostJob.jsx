@@ -49,9 +49,9 @@ const PostJob = () => {
 		setInput({ ...input, companyId: selectedCompany._id });
 	};
 
-	const selectJobTypeHandler = (e) => {
-		setInput({ ...input, [e.target.name]: e.target.value });
-	};
+	// const selectJobTypeHandler = (e) => {
+	// 	setInput({ ...input, [e.target.name]: e.target.value });
+	// };
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
@@ -179,7 +179,7 @@ const PostJob = () => {
 						<div>
 							<Label>Company</Label>
 							{companies.length > 0 && (
-								<Select onValueChange={selectJobTypeHandler}>
+								<Select onValueChange={selectChangeHandler}>
 									<SelectTrigger className="w-[180px]">
 										<SelectValue placeholder="Select a Company" />
 									</SelectTrigger>
