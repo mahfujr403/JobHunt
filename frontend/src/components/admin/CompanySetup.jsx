@@ -104,16 +104,6 @@ const CompanySetup = () => {
 								onChange={changeEventHandler}
 							/>
 						</div>
-						<div>
-							<Label>Description</Label>
-							<textarea
-								name="description"
-								value={input.description}
-								onChange={changeEventHandler}
-								className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
-								rows="6"
-							/>
-						</div>
 
 						<div>
 							<Label>Website</Label>
@@ -122,6 +112,16 @@ const CompanySetup = () => {
 								name="website"
 								value={input.website}
 								onChange={changeEventHandler}
+							/>
+						</div>
+						<div className="col-span-2">
+							<Label>Description</Label>
+							<textarea
+								name="description"
+								value={input.description}
+								onChange={changeEventHandler}
+								className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+								rows="6"
 							/>
 						</div>
 						<div>

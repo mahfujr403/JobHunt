@@ -96,68 +96,71 @@ const JobSetup = () => {
 						</Button>
 						<h1 className="font-bold text-xl">Job Setup</h1>
 					</div>
-
 					<div className="grid grid-cols-2 gap-4">
+						<div className="grid grid-cols-2 gap-4">
+							<div>
+								<Label>Job Title</Label>
+								<Input
+									jobType="text"
+									name="title"
+									value={input.title}
+									onChange={changeEventHandler}
+								/>
+							</div>
+						</div>
+
 						<div>
-							<Label>Job Title</Label>
+							<Label>Location</Label>
 							<Input
-								jobType="text"
-								name="title"
-								value={input.title}
+								type="text"
+								name="location"
+								value={input.location}
+								onChange={changeEventHandler}
+							/>
+						</div>
+
+						<div className="col-span-2">
+							<Label>Description</Label>
+							<textarea
+								name="description"
+								value={input.description}
+								onChange={changeEventHandler}
+								className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
+								rows="6"
+							/>
+						</div>
+
+						<div>
+							<Label>Position</Label>
+							<Input
+								type="number"
+								name="position"
+								value={input.position}
+								onChange={changeEventHandler}
+							/>
+						</div>
+
+						<div>
+							<Label>job Type</Label>
+							<Input
+								type="text"
+								name="jobType"
+								value={input.jobType}
+								onChange={changeEventHandler}
+							/>
+						</div>
+
+						<div>
+							<Label>Salary</Label>
+							<Input
+								type="number"
+								name="salary"
+								value={input.salary}
 								onChange={changeEventHandler}
 							/>
 						</div>
 					</div>
-					<div>
-						<Label>Description</Label>
-						<textarea
-							name="description"
-							value={input.description}
-							onChange={changeEventHandler}
-							className="w-full p-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200"
-							rows="6" // Adjust the height by changing the rows attribute
-						/>
-					</div>
 
-					<div>
-						<Label>Location</Label>
-						<Input
-							type="text"
-							name="location"
-							value={input.location}
-							onChange={changeEventHandler}
-						/>
-					</div>
-
-					<div>
-						<Label>Position</Label>
-						<Input
-							type="number"
-							name="position"
-							value={input.position}
-							onChange={changeEventHandler}
-						/>
-					</div>
-
-					<div>
-						<Label>job Type</Label>
-						<Input
-							type="text"
-							name="jobType"
-							value={input.jobType}
-							onChange={changeEventHandler}
-						/>
-					</div>
-
-					<div>
-						<Label>Salary</Label>
-						<Input
-							type="number"
-							name="salary"
-							value={input.salary}
-							onChange={changeEventHandler}
-						/>
-					</div>
 					{loading ? (
 						<Button className="w-full my-4">
 							{" "}
