@@ -113,61 +113,90 @@ export const logout = async (req, res) => {
          (error);
     }
 }
+const cloudinary = require("cloudinary").v2;
+const { getDataUri } = require("./utils"); // assuming you have a helper function for handling the file URI.
+
 export const updateProfile = async (req, res) => {
-    try {
-        const { fullname, email, phoneNumber, bio, skills } = req.body;
-        
-        const file = req.file;
-        // cloudinary ayega idhar
-        const fileUri = getDataUri(file);
-        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+	try {
+		const { fullname, email, phoneNumber, bio, skills } = req.body;
 
+		// Handle profile picture and resume upload
+		const profilePicture = req.files?.profilePicture?.[0];
+		const resume = req.files?.resume?.[0];
 
+		let profilePictureUrl = null;
+		let resumeUrl = null;
 
-        let skillsArray;
-        if(skills){
-            skillsArray = skills.split(",");
-        }
-        const userId = req.id; // middleware authentication
-        let user = await User.findById(userId);
+		if (profilePicture) {
+			const fileUri = getDataUri(profilePicture);
+			const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+			profilePictureUrl = cloudResponse.secure_url; // Save the cloudinary URL
+		}
 
-        if (!user) {
-            return res.status(400).json({
-                message: "User not found.",
-                success: false
-            })
-        }
-        // updating data
-        if(fullname) user.fullname = fullname
-        if(email) user.email = email
-        if(phoneNumber)  user.phoneNumber = phoneNumber
-        if(bio) user.profile.bio = bio
-        if(skills) user.profile.skills = skillsArray
-      
-        // resume comes later here...
-        if(cloudResponse){
-            user.profile.resume = cloudResponse.secure_url // save the cloudinary url
-            user.profile.resumeOriginalName = file.originalname // Save the original file name
-        }
+		if (resume) {
+			const fileUri = getDataUri(resume);
+			const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+			resumeUrl = cloudResponse.secure_url; // Save the cloudinary URL for resume
+		}
 
+		// Convert skills to an array if it's provided
+		let skillsArray = [];
+		if (skills) {
+			skillsArray = skills.split(",").map((skill) => skill.trim());
+		}
 
-        await user.save();
+		// Get the authenticated user ID from the request (middleware authentication)
+		const userId = req.user.id;
 
-        user = {
-            _id: user._id,
-            fullname: user.fullname,
-            email: user.email,
-            phoneNumber: user.phoneNumber,
-            role: user.role,
-            profile: user.profile
-        }
+		let user = await User.findById(userId);
 
-        return res.status(200).json({
-            message:"Profile updated successfully.",
-            user,
-            success:true
-        })
-    } catch (error) {
-         (error);
-    }
-}
+		if (!user) {
+			return res.status(400).json({
+				message: "User not found.",
+				success: false,
+			});
+		}
+
+		// Update user profile fields if the data is provided
+		if (fullname) user.fullname = fullname;
+		if (email) user.email = email;
+		if (phoneNumber) user.phoneNumber = phoneNumber;
+		if (bio) user.profile.bio = bio;
+		if (skills) user.profile.skills = skillsArray;
+
+		// Update profile picture and resume if they were uploaded
+		if (profilePictureUrl) {
+			user.profile.profilePicture = profilePictureUrl; // Save the profile picture URL
+		}
+
+		if (resumeUrl) {
+			user.profile.resume = resumeUrl; // Save the resume URL
+			user.profile.resumeOriginalName = resume.originalname; // Save the original file name
+		}
+
+		// Save the updated user data
+		await user.save();
+
+		// Create a sanitized user object to return
+		const updatedUser = {
+			_id: user._id,
+			fullname: user.fullname,
+			email: user.email,
+			phoneNumber: user.phoneNumber,
+			role: user.role,
+			profile: user.profile,
+		};
+
+		return res.status(200).json({
+			message: "Profile updated successfully.",
+			user: updatedUser,
+			success: true,
+		});
+	} catch (error) {
+		console.error("Error updating profile:", error);
+		return res.status(500).json({
+			message: "An error occurred while updating the profile.",
+			success: false,
+		});
+	}
+};

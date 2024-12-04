@@ -27,37 +27,32 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 		phoneNumber: user?.phoneNumber || "",
 		bio: user?.profile?.bio || "",
 		skills: user?.profile?.skills?.join(", ") || "",
-		resume: user?.profile?.resume || "",
-		profilePicture: user?.profile?.profilePicture || "",
+		profilePicture: null,
+		resume: null,
 	});
+
 	const dispatch = useDispatch();
 
-	// Handle input change for text fields
 	const changeEventHandler = (e) => {
 		setInput({ ...input, [e.target.name]: e.target.value });
 	};
 
-	// Handle file input change for resume and profile picture
 	const fileChangeHandler = (e) => {
-		const { name } = e.target;
-		const file = e.target.files?.[0];
-		setInput({ ...input, [name]: file });
+		const { name, files } = e.target;
+		setInput({ ...input, [name]: files[0] });
 	};
 
-	// Submit form data to the server
 	const submitHandler = async (e) => {
 		e.preventDefault();
-
-		// Prepare FormData
 		const formData = new FormData();
 		formData.append("fullname", input.fullname);
 		formData.append("email", input.email);
 		formData.append("phoneNumber", input.phoneNumber);
 		formData.append("bio", input.bio);
 		formData.append("skills", input.skills);
-		if (input.resume) formData.append("resume", input.resume);
 		if (input.profilePicture)
 			formData.append("profilePicture", input.profilePicture);
+		if (input.resume) formData.append("resume", input.resume);
 
 		try {
 			setLoading(true);
@@ -65,136 +60,137 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 				`${USER_API_END_POINT}/profile/update`,
 				formData,
 				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
+					headers: { "Content-Type": "multipart/form-data" },
 					withCredentials: true,
 				}
 			);
+
 			if (res.data.success) {
 				dispatch(setUser(res.data.user));
 				toast.success(res.data.message);
+				setOpen(false);
+			} else {
+				toast.error(res.data.message || "Failed to update profile");
 			}
 		} catch (error) {
-			toast.error(error.response?.data?.message || "Failed to update profile");
+			toast.error(error.response?.data?.message || "Internal server error");
 		} finally {
 			setLoading(false);
-			setOpen(false);
 		}
 	};
 
 	return (
-		<div>
-			<Dialog open={open}>
-				<DialogContent
-					className="sm:max-w-[425px]"
-					onInteractOutside={() => setOpen(false)}
-				>
-					<DialogHeader>
-						<DialogTitle>Update Profile</DialogTitle>
-					</DialogHeader>
-					<form onSubmit={submitHandler}>
-						<div className="grid gap-4 py-4">
-							<div>
-								<Label>Profile Picture</Label>
-								<Input
-									type="file"
-									name="profilePicture"
-									accept="image/*"
-									onChange={fileChangeHandler}
-								/>
-							</div>
-							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="name" className="text-right">
-									Name
-								</Label>
-								<Input
-									id="name"
-									name="fullname"
-									type="text"
-									value={input.fullname}
-									onChange={changeEventHandler}
-									className="col-span-3"
-								/>
-							</div>
-							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="email" className="text-right">
-									Email
-								</Label>
-								<Input
-									id="email"
-									name="email"
-									type="email"
-									value={input.email}
-									onChange={changeEventHandler}
-									className="col-span-3"
-								/>
-							</div>
-							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="phoneNumber" className="text-right">
-									Phone Number
-								</Label>
-								<Input
-									id="phoneNumber"
-									name="phoneNumber"
-									value={input.phoneNumber}
-									onChange={changeEventHandler}
-									className="col-span-3"
-								/>
-							</div>
-							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="bio" className="text-right">
-									Bio
-								</Label>
-								<Input
-									id="bio"
-									name="bio"
-									value={input.bio}
-									onChange={changeEventHandler}
-									className="col-span-3"
-								/>
-							</div>
-							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="skills" className="text-right">
-									Skills
-								</Label>
-								<Input
-									id="skills"
-									name="skills"
-									value={input.skills}
-									onChange={changeEventHandler}
-									className="col-span-3"
-								/>
-							</div>
-							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="resume" className="text-right">
-									Resume
-								</Label>
-								<Input
-									id="resume"
-									name="resume"
-									type="file"
-									accept="application/pdf"
-									onChange={fileChangeHandler}
-									className="col-span-3"
-								/>
-							</div>
+		<Dialog open={open}>
+			<DialogContent
+				className="sm:max-w-[425px]"
+				onInteractOutside={() => setOpen(false)}
+				aria-describedby="update-profile-description"
+			>
+				<DialogHeader>
+					<DialogTitle>Update Profile</DialogTitle>
+					<p id="update-profile-description" className="text-sm text-gray-500">
+						Update your profile information, including your profile picture and
+						resume.
+					</p>
+				</DialogHeader>
+				<form onSubmit={submitHandler}>
+					<div className="grid gap-4 py-4">
+						<div>
+							<Label>Profile Picture</Label>
+							<Input
+								type="file"
+								name="profilePicture"
+								accept="image/*"
+								onChange={fileChangeHandler}
+							/>
 						</div>
-						<DialogFooter>
-							{loading ? (
-								<Button className="w-full my-4">
-									<Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
-								</Button>
-							) : (
-								<Button type="submit" className="w-full my-4">
-									Update
-								</Button>
-							)}
-						</DialogFooter>
-					</form>
-				</DialogContent>
-			</Dialog>
-		</div>
+						<div className="grid grid-cols-4 items-center gap-4">
+							<Label htmlFor="fullname" className="text-right">
+								Name
+							</Label>
+							<Input
+								id="fullname"
+								name="fullname"
+								type="text"
+								value={input.fullname}
+								onChange={changeEventHandler}
+								className="col-span-3"
+							/>
+						</div>
+						<div className="grid grid-cols-4 items-center gap-4">
+							<Label htmlFor="email" className="text-right">
+								Email
+							</Label>
+							<Input
+								id="email"
+								name="email"
+								type="email"
+								value={input.email}
+								onChange={changeEventHandler}
+								className="col-span-3"
+							/>
+						</div>
+						<div className="grid grid-cols-4 items-center gap-4">
+							<Label htmlFor="phoneNumber" className="text-right">
+								Phone Number
+							</Label>
+							<Input
+								id="phoneNumber"
+								name="phoneNumber"
+								value={input.phoneNumber}
+								onChange={changeEventHandler}
+								className="col-span-3"
+							/>
+						</div>
+						<div className="grid grid-cols-4 items-center gap-4">
+							<Label htmlFor="bio" className="text-right">
+								Bio
+							</Label>
+							<Input
+								id="bio"
+								name="bio"
+								value={input.bio}
+								onChange={changeEventHandler}
+								className="col-span-3"
+							/>
+						</div>
+						<div className="grid grid-cols-4 items-center gap-4">
+							<Label htmlFor="skills" className="text-right">
+								Skills
+							</Label>
+							<Input
+								id="skills"
+								name="skills"
+								value={input.skills}
+								onChange={changeEventHandler}
+								className="col-span-3"
+							/>
+						</div>
+						<div>
+							<Label>Resume</Label>
+							<Input
+								type="file"
+								name="resume"
+								accept="application/pdf"
+								onChange={fileChangeHandler}
+							/>
+						</div>
+					</div>
+					<DialogFooter>
+						{loading ? (
+							<Button className="w-full my-4">
+								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+								Please wait
+							</Button>
+						) : (
+							<Button type="submit" className="w-full my-4">
+								Update
+							</Button>
+						)}
+					</DialogFooter>
+				</form>
+			</DialogContent>
+		</Dialog>
 	);
 };
 
