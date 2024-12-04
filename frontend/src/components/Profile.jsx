@@ -72,7 +72,7 @@ const Profile = () => {
 
 				<div className="grid w-full max-w-sm items-center gap-1.5">
 					<Label className="text-md font-bold">Resume</Label>
-					{user?.profile?.resume}
+					{/* {user?.profile?.resume} */}
 					{isResume ? (
 						<a
 							target="blank"
