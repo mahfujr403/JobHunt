@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import useGetJobById from "@/hooks/useGetJobById";
 import { JOB_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
@@ -35,6 +34,20 @@ const JobSetup = () => {
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
+
+		if (
+			!input.title ||
+			!input.description ||
+			!input.location ||
+			!input.position ||
+			!input.jobType ||
+			!input.salary ||
+			!input.company
+		) {
+			toast.error("All fields are required");
+			return;
+		}
+
 		const formData = new FormData();
 		formData.append("title", input.title);
 		formData.append("description", input.description);
@@ -61,23 +74,25 @@ const JobSetup = () => {
 				navigate("/admin/jobs");
 			}
 		} catch (error) {
-			error;
-			toast.error(error.response.data.message);
+			console.error(error);
+			toast.error(error?.response?.data?.message || "Failed to update job");
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	useEffect(() => {
-		setInput({
-			title: singleJob.title,
-			description: singleJob.description,
-			location: singleJob.location,
-			position: singleJob.position,
-			jobType: singleJob.jobType,
-			salary: singleJob.salary,
-			company: singleJob.company,
-		});
+		if (singleJob) {
+			setInput({
+				title: singleJob.title || "",
+				description: singleJob.description || "",
+				location: singleJob.location || "",
+				position: singleJob.position || "",
+				jobType: singleJob.jobType || "",
+				salary: singleJob.salary || "",
+				company: singleJob.company || "",
+			});
+		}
 	}, [singleJob]);
 
 	return (
@@ -87,7 +102,7 @@ const JobSetup = () => {
 				<form onSubmit={submitHandler}>
 					<div className="flex items-center gap-5 p-8">
 						<Button
-							onClick={() => navigate("/admin/companies")}
+							onClick={() => navigate("/admin/jobs")}
 							variant="outline"
 							className="flex items-center gap-2 text-gray-500 font-semibold"
 						>
@@ -97,16 +112,14 @@ const JobSetup = () => {
 						<h1 className="font-bold text-xl">Job Setup</h1>
 					</div>
 					<div className="grid grid-cols-2 gap-4">
-						<div className="grid grid-cols-2 gap-4">
-							<div>
-								<Label>Job Title</Label>
-								<Input
-									jobType="text"
-									name="title"
-									value={input.title}
-									onChange={changeEventHandler}
-								/>
-							</div>
+						<div>
+							<Label>Job Title</Label>
+							<Input
+								type="text"
+								name="title"
+								value={input.title}
+								onChange={changeEventHandler}
+							/>
 						</div>
 
 						<div>
@@ -159,18 +172,28 @@ const JobSetup = () => {
 								onChange={changeEventHandler}
 							/>
 						</div>
+
+						<div>
+							<Label>Company</Label>
+							<Input
+								type="text"
+								name="company"
+								value={input.company}
+								onChange={changeEventHandler}
+							/>
+						</div>
 					</div>
 
-					{loading ? (
-						<Button className="w-full my-4">
-							{" "}
-							<Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
-						</Button>
-					) : (
-						<Button type="submit" className="w-full my-4">
-							Update
-						</Button>
-					)}
+					<Button type="submit" className="w-full my-4" disabled={loading}>
+						{loading ? (
+							<>
+								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+								Please wait
+							</>
+						) : (
+							"Update"
+						)}
+					</Button>
 				</form>
 			</div>
 		</div>
