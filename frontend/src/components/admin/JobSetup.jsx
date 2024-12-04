@@ -44,15 +44,30 @@ const JobSetup = () => {
 
 		try {
 			setLoading(true);
-			console.log("Submitting data:", input);
+			// console.log("Submitting data:", input);
 
-			// Prepare FormData
+			// // Prepare FormData
+			// const formData = new FormData();
+			// Object.keys(input).forEach((key) => formData.append(key, input[key]));
+
+			// console.log("FormData:", formData);
+			// console.log("Before sending request");
+			// // Send update request
+			// const res = await axios.put(
+			// 	console.log("$Job API Endpoint:", JOB_API_END_POINT),
+			// 	`${JOB_API_END_POINT}/update/${params.id}`,
+			// 	formData,
+			// 	{
+			// 		headers: { "Content-Type": "multipart/form-data" },
+			// 		withCredentials: true,
+			// 	}
+			// );
+
+			console.log(
+				"Sending request to:",
+				`${JOB_API_END_POINT}/update/${params.id}`
+			);
 			const formData = new FormData();
-			Object.keys(input).forEach((key) => formData.append(key, input[key]));
-
-			console.log("FormData:", formData);
-			console.log("Before sending request");
-			// Send update request
 			const res = await axios.put(
 				`${JOB_API_END_POINT}/update/${params.id}`,
 				formData,
@@ -61,9 +76,10 @@ const JobSetup = () => {
 					withCredentials: true,
 				}
 			);
-	
-		console.log("After sending request");
-		console.log("Response:", res.data);
+			console.log("Response:", res.data);
+
+			console.log("After sending request");
+			console.log("Response:", res.data);
 
 			// Handle response
 			console.log("API response:", res.data);
@@ -74,8 +90,14 @@ const JobSetup = () => {
 				toast.error(res.data.message || "Failed to update job");
 			}
 		} catch (error) {
-			console.error("Error during update:", error);
-			toast.error(error?.response?.data?.message || "Failed to update job");
+			// console.error("Error during update:", error);
+			// toast.error(error?.response?.data?.message || "Failed to update job");
+
+			console.error("Request failed:", error);
+			if (error.response) {
+				console.error("Response status:", error.response.status);
+				console.error("Response data:", error.response.data);
+			}
 		} finally {
 			setLoading(false);
 		}
