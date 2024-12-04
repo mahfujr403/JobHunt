@@ -26,37 +26,39 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 		email: user?.email || "",
 		phoneNumber: user?.phoneNumber || "",
 		bio: user?.profile?.bio || "",
-		skills: user?.profile?.skills?.map((skill) => skill) || "",
-		file: user?.profile?.resume || "",
+		skills: user?.profile?.skills?.join(", ") || "",
+		resume: user?.profile?.resume || "",
+		profilePicture: user?.profile?.profilePicture || "",
 	});
 	const dispatch = useDispatch();
 
+	// Handle input change for text fields
 	const changeEventHandler = (e) => {
 		setInput({ ...input, [e.target.name]: e.target.value });
 	};
 
+	// Handle file input change for resume and profile picture
 	const fileChangeHandler = (e) => {
+		const { name } = e.target;
 		const file = e.target.files?.[0];
-		setInput({ ...input, file });
+		setInput({ ...input, [name]: file });
 	};
 
-	const changeFileHandler = (e) => {
-		const file = e.target.files?.[0];
-		setInput({ ...input, file });
-	};
-
-
+	// Submit form data to the server
 	const submitHandler = async (e) => {
 		e.preventDefault();
+
+		// Prepare FormData
 		const formData = new FormData();
 		formData.append("fullname", input.fullname);
 		formData.append("email", input.email);
 		formData.append("phoneNumber", input.phoneNumber);
 		formData.append("bio", input.bio);
 		formData.append("skills", input.skills);
-		if (input.file) {
-			formData.append("file", input.file);
-		}
+		if (input.resume) formData.append("resume", input.resume);
+		if (input.profilePicture)
+			formData.append("profilePicture", input.profilePicture);
+
 		try {
 			setLoading(true);
 			const res = await axios.post(
@@ -74,13 +76,11 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 				toast.success(res.data.message);
 			}
 		} catch (error) {
-			error;
-			toast.error(error.response.data.message);
+			toast.error(error.response?.data?.message || "Failed to update profile");
 		} finally {
 			setLoading(false);
+			setOpen(false);
 		}
-		setOpen(false);
-		input;
 	};
 
 	return (
@@ -96,11 +96,12 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 					<form onSubmit={submitHandler}>
 						<div className="grid gap-4 py-4">
 							<div>
-								<Label>Profile</Label>
+								<Label>Profile Picture</Label>
 								<Input
 									type="file"
+									name="profilePicture"
 									accept="image/*"
-									onChange={changeFileHandler}
+									onChange={fileChangeHandler}
 								/>
 							</div>
 							<div className="grid grid-cols-4 items-center gap-4">
@@ -109,7 +110,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 								</Label>
 								<Input
 									id="name"
-									name="name"
+									name="fullname"
 									type="text"
 									value={input.fullname}
 									onChange={changeEventHandler}
@@ -130,12 +131,12 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 								/>
 							</div>
 							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="number" className="text-right">
-									Number
+								<Label htmlFor="phoneNumber" className="text-right">
+									Phone Number
 								</Label>
 								<Input
-									id="number"
-									name="number"
+									id="phoneNumber"
+									name="phoneNumber"
 									value={input.phoneNumber}
 									onChange={changeEventHandler}
 									className="col-span-3"
@@ -166,12 +167,12 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 								/>
 							</div>
 							<div className="grid grid-cols-4 items-center gap-4">
-								<Label htmlFor="file" className="text-right">
+								<Label htmlFor="resume" className="text-right">
 									Resume
 								</Label>
 								<Input
-									id="file"
-									name="file"
+									id="resume"
+									name="resume"
 									type="file"
 									accept="application/pdf"
 									onChange={fileChangeHandler}
@@ -182,8 +183,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 						<DialogFooter>
 							{loading ? (
 								<Button className="w-full my-4">
-									{" "}
-									<Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait
 								</Button>
 							) : (
 								<Button type="submit" className="w-full my-4">
