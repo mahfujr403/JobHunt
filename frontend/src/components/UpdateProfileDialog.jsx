@@ -40,6 +40,12 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 		setInput({ ...input, file });
 	};
 
+	const changeFileHandler = (e) => {
+		const file = e.target.files?.[0];
+		setInput({ ...input, file });
+	};
+
+
 	const submitHandler = async (e) => {
 		e.preventDefault();
 		const formData = new FormData();
@@ -89,6 +95,14 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
 					</DialogHeader>
 					<form onSubmit={submitHandler}>
 						<div className="grid gap-4 py-4">
+							<div>
+								<Label>Profile</Label>
+								<Input
+									type="file"
+									accept="image/*"
+									onChange={changeFileHandler}
+								/>
+							</div>
 							<div className="grid grid-cols-4 items-center gap-4">
 								<Label htmlFor="name" className="text-right">
 									Name
