@@ -21,7 +21,6 @@ const JobSetup = () => {
 		position: "",
 		jobType: "",
 		salary: "",
-		company: "",
 	});
 
 	const { singleJob } = useSelector((store) => store.job);
@@ -51,6 +50,8 @@ const JobSetup = () => {
 			const formData = new FormData();
 			Object.keys(input).forEach((key) => formData.append(key, input[key]));
 
+			console.log("FormData:", formData);
+			console.log("Before sending request");
 			// Send update request
 			const res = await axios.put(
 				`${JOB_API_END_POINT}/update/${params.id}`,
@@ -60,6 +61,9 @@ const JobSetup = () => {
 					withCredentials: true,
 				}
 			);
+	
+		console.log("After sending request");
+		console.log("Response:", res.data);
 
 			// Handle response
 			console.log("API response:", res.data);
@@ -88,7 +92,6 @@ const JobSetup = () => {
 				position: singleJob.position || "",
 				jobType: singleJob.jobType || "",
 				salary: singleJob.salary || "",
-				company: singleJob.company || "",
 			});
 		}
 	}, [singleJob]);
@@ -167,16 +170,6 @@ const JobSetup = () => {
 								type="number"
 								name="salary"
 								value={input.salary}
-								onChange={changeEventHandler}
-							/>
-						</div>
-
-						<div>
-							<Label>Company</Label>
-							<Input
-								type="text"
-								name="company"
-								value={input.company}
 								onChange={changeEventHandler}
 							/>
 						</div>
