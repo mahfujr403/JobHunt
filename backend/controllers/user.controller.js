@@ -113,8 +113,10 @@ export const logout = async (req, res) => {
          (error);
     }
 }
-const cloudinary = require("cloudinary").v2;
-const { getDataUri } = require("./utils"); // assuming you have a helper function for handling the file URI.
+
+
+
+
 
 export const updateProfile = async (req, res) => {
 	try {
