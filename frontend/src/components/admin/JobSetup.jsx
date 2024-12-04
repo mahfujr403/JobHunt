@@ -28,60 +28,58 @@ const JobSetup = () => {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
+	// Handle input change
 	const changeEventHandler = (e) => {
 		setInput({ ...input, [e.target.name]: e.target.value });
 	};
 
+	// Submit handler
 	const submitHandler = async (e) => {
 		e.preventDefault();
 
-		if (
-			!input.title ||
-			!input.description ||
-			!input.location ||
-			!input.position ||
-			!input.jobType ||
-			!input.salary ||
-			!input.company
-		) {
+		// Validation: Check if all fields are filled
+		if (Object.values(input).some((value) => !value)) {
 			toast.error("All fields are required");
 			return;
 		}
 
-		const formData = new FormData();
-		formData.append("title", input.title);
-		formData.append("description", input.description);
-		formData.append("location", input.location);
-		formData.append("position", input.position);
-		formData.append("jobType", input.jobType);
-		formData.append("salary", input.salary);
-		formData.append("company", input.company);
-
 		try {
 			setLoading(true);
+			console.log("Submitting data:", input);
+
+			// Prepare FormData
+			const formData = new FormData();
+			Object.keys(input).forEach((key) => formData.append(key, input[key]));
+
+			// Send update request
 			const res = await axios.put(
 				`${JOB_API_END_POINT}/update/${params.id}`,
 				formData,
 				{
-					headers: {
-						"Content-Type": "multipart/form-data",
-					},
+					headers: { "Content-Type": "multipart/form-data" },
 					withCredentials: true,
 				}
 			);
+
+			// Handle response
+			console.log("API response:", res.data);
 			if (res.data.success) {
 				toast.success(res.data.message);
 				navigate("/admin/jobs");
+			} else {
+				toast.error(res.data.message || "Failed to update job");
 			}
 		} catch (error) {
-			console.error(error);
+			console.error("Error during update:", error);
 			toast.error(error?.response?.data?.message || "Failed to update job");
 		} finally {
 			setLoading(false);
 		}
 	};
 
+	// Populate form with fetched job data
 	useEffect(() => {
+		console.log("Fetched singleJob:", singleJob);
 		if (singleJob) {
 			setInput({
 				title: singleJob.title || "",
