@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import useGetJobById from "@/hooks/useGetJobById";
 import { JOB_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
@@ -21,101 +22,62 @@ const JobSetup = () => {
 		position: "",
 		jobType: "",
 		salary: "",
+		company: "",
 	});
 
 	const { singleJob } = useSelector((store) => store.job);
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 
-	// Handle input change
 	const changeEventHandler = (e) => {
 		setInput({ ...input, [e.target.name]: e.target.value });
 	};
 
-	// Submit handler
 	const submitHandler = async (e) => {
 		e.preventDefault();
-
-		// Validation: Check if all fields are filled
-		if (Object.values(input).some((value) => !value)) {
-			toast.error("All fields are required");
-			return;
-		}
+		const formData = new FormData();
+		formData.append("title", input.title);
+		formData.append("description", input.description);
+		formData.append("location", input.location);
+		formData.append("position", input.position);
+		formData.append("jobType", input.jobType);
+		formData.append("salary", input.salary);
+		formData.append("company", input.company);
 
 		try {
 			setLoading(true);
-			// console.log("Submitting data:", input);
-
-			// // Prepare FormData
-			// const formData = new FormData();
-			// Object.keys(input).forEach((key) => formData.append(key, input[key]));
-
-			// console.log("FormData:", formData);
-			// console.log("Before sending request");
-			// // Send update request
-			// const res = await axios.put(
-			// 	console.log("$Job API Endpoint:", JOB_API_END_POINT),
-			// 	`${JOB_API_END_POINT}/update/${params.id}`,
-			// 	formData,
-			// 	{
-			// 		headers: { "Content-Type": "multipart/form-data" },
-			// 		withCredentials: true,
-			// 	}
-			// );
-
-			console.log(
-				"Sending request to:",
-				`${JOB_API_END_POINT}/update/${params.id}`
-			);
-			const formData = new FormData();
 			const res = await axios.put(
 				`${JOB_API_END_POINT}/update/${params.id}`,
 				formData,
 				{
-					headers: { "Content-Type": "multipart/form-data" },
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
 					withCredentials: true,
 				}
 			);
-			console.log("Response:", res.data);
-
-			console.log("After sending request");
-			console.log("Response:", res.data);
-
-			// Handle response
-			console.log("API response:", res.data);
 			if (res.data.success) {
 				toast.success(res.data.message);
 				navigate("/admin/jobs");
-			} else {
-				toast.error(res.data.message || "Failed to update job");
 			}
 		} catch (error) {
-			// console.error("Error during update:", error);
-			// toast.error(error?.response?.data?.message || "Failed to update job");
-
-			console.error("Request failed:", error);
-			if (error.response) {
-				console.error("Response status:", error.response.status);
-				console.error("Response data:", error.response.data);
-			}
+			error;
+			toast.error(error.response.data.message);
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	// Populate form with fetched job data
 	useEffect(() => {
-		console.log("Fetched singleJob:", singleJob);
-		if (singleJob) {
-			setInput({
-				title: singleJob.title || "",
-				description: singleJob.description || "",
-				location: singleJob.location || "",
-				position: singleJob.position || "",
-				jobType: singleJob.jobType || "",
-				salary: singleJob.salary || "",
-			});
-		}
+		setInput({
+			title: singleJob.title || "",
+			description: singleJob.description || "",
+			location: singleJob.location  || "",
+			position: singleJob.position || "",
+			jobType: singleJob.jobType || "",
+			salary: singleJob.salary || "",
+			company: singleJob.company || "",
+		});
 	}, [singleJob]);
 
 	return (
@@ -125,7 +87,7 @@ const JobSetup = () => {
 				<form onSubmit={submitHandler}>
 					<div className="flex items-center gap-5 p-8">
 						<Button
-							onClick={() => navigate("/admin/jobs")}
+							onClick={() => navigate("/admin/companies")}
 							variant="outline"
 							className="flex items-center gap-2 text-gray-500 font-semibold"
 						>
@@ -135,14 +97,16 @@ const JobSetup = () => {
 						<h1 className="font-bold text-xl">Job Setup</h1>
 					</div>
 					<div className="grid grid-cols-2 gap-4">
-						<div>
-							<Label>Job Title</Label>
-							<Input
-								type="text"
-								name="title"
-								value={input.title}
-								onChange={changeEventHandler}
-							/>
+						<div className="grid grid-cols-2 gap-4">
+							<div>
+								<Label>Job Title</Label>
+								<Input
+									jobType="text"
+									name="title"
+									value={input.title}
+									onChange={changeEventHandler}
+								/>
+							</div>
 						</div>
 
 						<div>
@@ -197,16 +161,16 @@ const JobSetup = () => {
 						</div>
 					</div>
 
-					<Button type="submit" className="w-full my-4" disabled={loading}>
-						{loading ? (
-							<>
-								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-								Please wait
-							</>
-						) : (
-							"Update"
-						)}
-					</Button>
+					{loading ? (
+						<Button className="w-full my-4">
+							{" "}
+							<Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait{" "}
+						</Button>
+					) : (
+						<Button type="submit" className="w-full my-4">
+							Update
+						</Button>
+					)}
 				</form>
 			</div>
 		</div>
